@@ -34,7 +34,7 @@ internal class FreeParkingShims : ComponentSolverShim
 		}
 		else
 		{
-			int amount = _component.GetValue<int>("baseMoneyInt");
+			int amount = _component.GetValue<int>("baseMoneyInt") % 5000;
 
 			tokenButton.OnInteract();
 			yield return new WaitForSeconds(buttonCooldown);
