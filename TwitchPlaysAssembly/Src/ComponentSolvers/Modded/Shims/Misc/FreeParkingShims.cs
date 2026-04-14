@@ -8,14 +8,13 @@ internal class FreeParkingShims : ComponentSolverShim
 {
 	private static readonly Type ComponentType = ReflectionHelper.FindType("FreeParkingScript");
 	private readonly object _component;
-	private bool pressJail;
-	KMSelectable jailButton, tokenButton, goButton;
-	public Array startMoney;
-	float buttonCooldown = 0.1f;
+	private readonly bool pressJail;
+	private readonly KMSelectable jailButton, tokenButton, goButton;
+	private readonly Array startMoney;
+	private readonly float buttonCooldown = 0.1f;
 
 	public FreeParkingShims(TwitchModule module) : base(module)
 	{
-		Debug.Log("Free Parking Shim instantiated");
 		_component = module.BombComponent.GetComponent(ComponentType);
 		pressJail = _component.GetValue<bool>("pressJail");
 		jailButton = _component.GetValue<KMSelectable>("jailButton");
@@ -27,8 +26,6 @@ internal class FreeParkingShims : ComponentSolverShim
 	protected override IEnumerator ForcedSolveIEnumeratorShimmed()
 	{
 		yield return null;
-		Debug.Log("Free Parking autosolved started");
-		//todo: test going to jail
 		if (pressJail)
 		{
 			jailButton.OnInteract();
@@ -37,8 +34,7 @@ internal class FreeParkingShims : ComponentSolverShim
 		}
 		else
 		{
-			//todo test paying
-			int amount = _component.GetValue<int>("baseMoneyInt");
+			int amount = _component.GetValue<int>("baseMoneyInt") % 5000;
 
 			tokenButton.OnInteract();
 			yield return new WaitForSeconds(buttonCooldown);
